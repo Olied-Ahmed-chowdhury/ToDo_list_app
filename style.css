@@ -1,0 +1,586 @@
+/* ============================================================
+   style.css  â€”  To-Do List App
+
+   Sections:
+     1. Variables  (colours, sizes, etc.)
+     2. Reset      (clear browser defaults)
+     3. Card       (the main white box)
+     4. Header     (title + icon)
+     5. Stats bar  (Total / Pending / Done counts)
+     6. Add-form   (text input + plus button)
+     7. Filter bar (All / Pending / Done tabs)
+     8. Task list  (scrollable list)
+     9. Task item  (each row in the list)
+    10. Empty state
+    11. Footer     (Clear Completed button)
+    12. Mobile     (small screens)
+============================================================ */
+
+
+/* ----------------------------------------------------------
+   1. CSS VARIABLES (Design Tokens)
+   Define colours, spacing, etc. in one place so they're
+   easy to change throughout the whole stylesheet.
+---------------------------------------------------------- */
+:root {
+  /* Page background colours */
+  --bg-gradient-start: #060818;
+  --bg-gradient-mid:   #0d1b3e;
+  --bg-gradient-end:   #0a1628;
+
+  /* Main card colours */
+  --card-bg:           rgba(15, 23, 55, 0.85);
+  --card-border:       rgba(99, 179, 237, 0.18);
+  --card-shadow:       0 24px 60px rgba(0, 0, 0, 0.55);
+
+  /* Accent / highlight colours */
+  --accent:            #38bdf8;   /* sky blue  */
+  --accent-2:          #818cf8;   /* indigo    */
+  --accent-3:          #34d399;   /* emerald   */
+  --accent-hover:      #7dd3fc;
+  --accent-glow:       rgba(56, 189, 248, 0.18);  /* kept soft */
+
+  /* Text colours â€” high contrast so everything is easy to read */
+  --text-primary:      #e2e8f0;
+  --text-secondary:    #7090b0;
+  --text-done:         #3d5470;
+
+  /* Red for delete / error, green for success */
+  --danger:            #fb7185;
+  --success:           #34d399;
+
+  /* Border radii */
+  --radius-sm:   10px;
+  --radius-md:   16px;
+  --radius-lg:   22px;
+  --radius-xl:   28px;
+  --radius-pill: 999px;
+
+  /* How fast hover animations play */
+  --transition: 0.22s ease;
+}
+
+
+/* ----------------------------------------------------------
+   2. RESET & BASE
+   Remove browser defaults so we start from a clean slate.
+---------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+
+  /*
+    The background is built from four layers:
+      1-3. Soft coloured blobs (radial gradients) for a mesh-gradient feel
+        4. A dark navy base gradient underneath everything
+  */
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(56, 189, 248, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(129, 140, 248, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 90%, rgba(52, 211, 153, 0.06) 0%, transparent 50%),
+    linear-gradient(160deg, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end));
+
+  min-height: 100vh;
+  display: flex;           /* centre the card vertically and horizontally */
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: var(--text-primary);
+}
+
+/* Remove default list bullet points */
+ul {
+  list-style: none;
+}
+
+/* Remove default button styles */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+
+/* ----------------------------------------------------------
+   3. APP WRAPPER & CARD
+   The card is the frosted-glass box in the centre of the page.
+---------------------------------------------------------- */
+.app-wrapper {
+  width: 100%;
+  max-width: 530px;
+}
+
+.app-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 38px 34px;
+
+  /*
+    backdrop-filter creates the frosted-glass look â€”
+    it blurs whatever is behind the card.
+  */
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  box-shadow: var(--card-shadow);
+}
+
+
+/* ----------------------------------------------------------
+   4. HEADER
+---------------------------------------------------------- */
+.app-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header-icon {
+  font-size: 1.6rem;       /* smaller â€” just an accent, not the main focus */
+  margin-bottom: 6px;
+  display: inline-block;
+  animation: floatIcon 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.25));  /* soft, not overpowering */
+}
+
+/* Keyframes for the floating icon */
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%       { transform: translateY(-10px) rotate(2deg); }
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  /* Vivid cyan â†’ indigo gradient text */
+  background: linear-gradient(120deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-subtitle {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+
+/* ----------------------------------------------------------
+   5. STATS BAR
+   Shows Total / Pending / Done counts.
+---------------------------------------------------------- */
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  /* Each stat gets its own glowing column */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-md);
+  padding: 16px 8px;
+  margin-bottom: 26px;
+  gap: 4px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  position: relative;
+}
+
+/* Vertical divider between stats */
+.stat + .stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255,255,255,0.07);
+}
+
+/* Each stat number gets its own colour */
+.stat:nth-child(1) .stat-number { color: #38bdf8; }  /* blue  â€” Total   */
+.stat:nth-child(2) .stat-number { color: #f59e0b; }  /* amber â€” Pending */
+.stat:nth-child(3) .stat-number { color: #34d399; }  /* green â€” Done    */
+
+.stat-number {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.stat-number:hover {
+  transform: scale(1.15);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+
+/* ----------------------------------------------------------
+   6. ADD TASK FORM
+   The input field + "+" button.
+---------------------------------------------------------- */
+.add-task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.task-input {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgba(99, 179, 237, 0.2);
+  /* Slightly lighter card bg so text stands out */
+  background: rgba(255, 255, 255, 0.05);
+  /* Darker, more readable input text */
+  color: #dbeafe;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.task-input:focus {
+  border-color: var(--accent);
+  background: rgba(56, 189, 248, 0.06);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.task-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/*
+  The + button.
+  It has a light shimmer that sweeps across on hover.
+  The glow shadow is kept soft so it doesn't overpower the UI.
+*/
+.add-btn {
+  width: auto;
+  padding: 0 20px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+  flex-shrink: 0;
+  /* Subtle shadow â€” not too glowy */
+  box-shadow: 0 3px 12px rgba(14, 165, 233, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer: a white stripe that slides across the button on hover */
+.add-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.18) 50%, transparent 65%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.add-btn:hover::after {
+  transform: translateX(100%);   /* slide the shimmer from left to right */
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.28);  /* slightly bigger, still soft */
+  filter: brightness(1.08);
+}
+
+.add-btn:active {
+  transform: scale(0.96) translateY(0);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.15);
+}
+
+
+/* ----------------------------------------------------------
+   7. FILTER BAR
+   Three pill-shaped tabs: All, Pending, Done.
+   They sit inside one rounded track so they look like a
+   segmented control (similar to iOS tabs).
+---------------------------------------------------------- */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-pill);
+  padding: 5px;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: var(--radius-pill);   /* rounded pill shape */
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  letter-spacing: 0.04em;
+  transition: all var(--transition);
+}
+
+/* Add a small emoji in front of each tab label */
+.filter-btn[data-filter="all"]::before     { content: 'ðŸ“‹ '; }
+.filter-btn[data-filter="pending"]::before { content: 'â³ '; }
+.filter-btn[data-filter="done"]::before    { content: 'âœ… '; }
+
+.filter-btn:hover {
+  color: var(--text-primary);
+}
+
+/* When a filter is active it gets a coloured background */
+.filter-btn.active {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Each active tab has a different colour â€” no heavy glow, just a light shadow */
+.filter-btn[data-filter="all"].active {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
+}
+
+.filter-btn[data-filter="pending"].active {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+.filter-btn[data-filter="done"].active {
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+
+/* ----------------------------------------------------------
+   8. TASK LIST
+---------------------------------------------------------- */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 390px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Custom scrollbar */
+.task-list::-webkit-scrollbar        { width: 4px; }
+.task-list::-webkit-scrollbar-track  { background: transparent; }
+.task-list::-webkit-scrollbar-thumb  {
+  background: rgba(56, 189, 248, 0.25);
+  border-radius: 99px;
+}
+
+
+/* ----------------------------------------------------------
+   9. INDIVIDUAL TASK ITEM
+   Each task is a <li> inside the task list.
+---------------------------------------------------------- */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px 16px;
+  border-radius: var(--radius-md);
+  /* Slightly lighter so dark text is easy to read */
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: all var(--transition);
+  animation: slideIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.task-item:hover {
+  background: rgba(56, 189, 248, 0.07);
+  border-color: rgba(56, 189, 248, 0.22);
+  transform: translateX(3px);   /* gentle nudge on hover */
+}
+
+/* Completed tasks: faded */
+.task-item.done {
+  opacity: 0.55;
+}
+
+
+/* -- Checkbox -- */
+.task-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(99, 179, 237, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition);
+  color: transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: transparent;
+}
+
+.task-checkbox:hover {
+  border-color: var(--accent);
+  background: rgba(56, 189, 248, 0.1);
+  transform: scale(1.1);
+}
+
+/* Checked state: vivid gradient fill */
+.task-item.done .task-checkbox {
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+
+/* -- Task Text (darker & more readable) -- */
+.task-text {
+  flex: 1;
+  font-size: 0.97rem;
+  font-weight: 500;
+  /* High-contrast white-blue so text is clearly readable */
+  color: #cfe5ff;
+  word-break: break-word;
+  transition: all var(--transition);
+}
+
+/* Strike-through when done */
+.task-item.done .task-text {
+  text-decoration: line-through;
+  color: var(--text-done);
+}
+
+
+/* -- Delete Button -- */
+.delete-btn {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 5px 7px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  opacity: 0;
+}
+
+.task-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  color: var(--danger);
+  background: rgba(251, 113, 133, 0.15);
+  transform: scale(1.15);
+}
+
+
+/* ----------------------------------------------------------
+   10. EMPTY STATE
+   Shown when there are no tasks to display.
+---------------------------------------------------------- */
+.empty-state {
+  text-align: center;
+  padding: 44px 20px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.empty-icon {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+  display: block;
+  animation: floatIcon 3.5s ease-in-out infinite;
+}
+
+/* JS adds this class to hide the empty state */
+.hidden {
+  display: none;
+}
+
+
+/* ----------------------------------------------------------
+   11. FOOTER
+---------------------------------------------------------- */
+.app-footer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.clear-btn {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 9px 22px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  letter-spacing: 0.03em;
+  transition: all var(--transition);
+}
+
+/* On hover: turn red to warn the user they're about to delete things */
+.clear-btn:hover {
+  color: var(--danger);
+  border-color: rgba(251, 113, 133, 0.5);
+  background: rgba(251, 113, 133, 0.08);
+  /* no box-shadow glow here â€” border colour is enough */
+  transform: translateY(-1px);
+}
+
+
+/* ----------------------------------------------------------
+   12. RESPONSIVE (Mobile)
+   Adjustments for small screens.
+---------------------------------------------------------- */
+@media (max-width: 480px) {
+  .app-card {
+    padding: 28px 18px;
+  }
+
+  .app-title {
+    font-size: 1.65rem;
+  }
+
+  .task-list {
+    max-height: 300px;
+  }
+
+  .filter-btn {
+    font-size: 0.75rem;
+  }
+}
