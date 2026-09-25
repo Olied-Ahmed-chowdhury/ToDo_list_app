@@ -1,5 +1,5 @@
 /* ============================================================
-   style.css  â€”  To-Do List App
+   style.css  —  To-Do List App
 
    Sections:
      1. Variables  (colours, sizes, etc.)
@@ -40,7 +40,7 @@
   --accent-hover:      #7dd3fc;
   --accent-glow:       rgba(56, 189, 248, 0.18);  /* kept soft */
 
-  /* Text colours â€” high contrast so everything is easy to read */
+  /* Text colours — high contrast so everything is easy to read */
   --text-primary:      #e2e8f0;
   --text-secondary:    #7090b0;
   --text-done:         #3d5470;
@@ -123,7 +123,7 @@ button {
   padding: 38px 34px;
 
   /*
-    backdrop-filter creates the frosted-glass look â€”
+    backdrop-filter creates the frosted-glass look —
     it blurs whatever is behind the card.
   */
   backdrop-filter: blur(28px) saturate(150%);
@@ -141,7 +141,7 @@ button {
 }
 
 .header-icon {
-  font-size: 1.6rem;       /* smaller â€” just an accent, not the main focus */
+  font-size: 1.6rem;       /* smaller — just an accent, not the main focus */
   margin-bottom: 6px;
   display: inline-block;
   animation: floatIcon 3.5s ease-in-out infinite;
@@ -158,7 +158,7 @@ button {
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  /* Vivid cyan â†’ indigo gradient text */
+  /* Vivid cyan → indigo gradient text */
   background: linear-gradient(120deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -211,9 +211,9 @@ button {
 }
 
 /* Each stat number gets its own colour */
-.stat:nth-child(1) .stat-number { color: #38bdf8; }  /* blue  â€” Total   */
-.stat:nth-child(2) .stat-number { color: #f59e0b; }  /* amber â€” Pending */
-.stat:nth-child(3) .stat-number { color: #34d399; }  /* green â€” Done    */
+.stat:nth-child(1) .stat-number { color: #38bdf8; }  /* blue  — Total   */
+.stat:nth-child(2) .stat-number { color: #f59e0b; }  /* amber — Pending */
+.stat:nth-child(3) .stat-number { color: #34d399; }  /* green — Done    */
 
 .stat-number {
   font-size: 1.75rem;
@@ -288,7 +288,7 @@ button {
   justify-content: center;
   transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
   flex-shrink: 0;
-  /* Subtle shadow â€” not too glowy */
+  /* Subtle shadow — not too glowy */
   box-shadow: 0 3px 12px rgba(14, 165, 233, 0.2);
   position: relative;
   overflow: hidden;
@@ -350,9 +350,9 @@ button {
 }
 
 /* Add a small emoji in front of each tab label */
-.filter-btn[data-filter="all"]::before     { content: 'ðŸ“‹ '; }
-.filter-btn[data-filter="pending"]::before { content: 'â³ '; }
-.filter-btn[data-filter="done"]::before    { content: 'âœ… '; }
+.filter-btn[data-filter="all"]::before     { content: '📋 '; }
+.filter-btn[data-filter="pending"]::before { content: '⏳ '; }
+.filter-btn[data-filter="done"]::before    { content: '✅ '; }
 
 .filter-btn:hover {
   color: var(--text-primary);
@@ -364,7 +364,7 @@ button {
   font-weight: 700;
 }
 
-/* Each active tab has a different colour â€” no heavy glow, just a light shadow */
+/* Each active tab has a different colour — no heavy glow, just a light shadow */
 .filter-btn[data-filter="all"].active {
   background: linear-gradient(135deg, #0ea5e9, #6366f1);
   box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
@@ -558,7 +558,7 @@ button {
   color: var(--danger);
   border-color: rgba(251, 113, 133, 0.5);
   background: rgba(251, 113, 133, 0.08);
-  /* no box-shadow glow here â€” border colour is enough */
+  /* no box-shadow glow here — border colour is enough */
   transform: translateY(-1px);
 }
 
