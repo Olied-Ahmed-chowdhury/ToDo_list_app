@@ -2,7 +2,7 @@
 
 A **beautiful, responsive To-Do List app** built with pure HTML, CSS, and JavaScript â€” no frameworks, no libraries, just clean and well-commented code.
 
-ðŸ”— **Live Demo:** [https://github.com/Olied-Ahmed-chowdhury/ToDo_list_app](https://github.com/Olied-Ahmed-chowdhury/ToDo_list_app)
+ðŸ”— **Live Demo:** [https://olied-ahmed-chowdhury.github.io/ToDo_list_app/](https://olied-ahmed-chowdhury.github.io/ToDo_list_app/)
 
 ---
 
