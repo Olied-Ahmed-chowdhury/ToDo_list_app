@@ -128,7 +128,7 @@ function buildTaskRow(task) {
   // Only visible when you hover over the row (controlled by CSS)
   const deleteBtn = document.createElement('button');
   deleteBtn.classList.add('delete-btn');
-  deleteBtn.innerHTML = '&#x2715;';   // the Ã— symbol
+  deleteBtn.innerHTML = '&#x2715;';   // the × symbol
   deleteBtn.setAttribute('aria-label', 'Delete task');
   deleteBtn.addEventListener('click', () => deleteTask(task.id));
 
@@ -178,7 +178,7 @@ function addTask(text) {
 
 
 // ============================================================
-//  TOGGLE A TASK  (done â†” not done)
+//  TOGGLE A TASK  (done ↔ not done)
 // ============================================================
 
 function toggleTask(id) {
