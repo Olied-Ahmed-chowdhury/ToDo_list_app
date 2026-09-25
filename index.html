@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A simple and beautiful To-Do List app to manage your daily tasks." />
+  <title>To-Do List App</title>
+
+  <!-- Our styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Font (Inter) for clean, modern text -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- Outer wrapper â€” just centres the card on the page -->
+  <div class="app-wrapper">
+
+    <!-- The main card (the dark glass box everything sits inside) -->
+    <div class="app-card">
+
+      <!-- Header: icon + title -->
+      <header class="app-header">
+        <div class="header-icon">&#x2705;</div>
+        <h1 class="app-title">My To-Do List</h1>
+        <p class="app-subtitle">Stay organised, stay productive</p>
+      </header>
+
+      <!-- Stats bar: shows how many tasks are total / pending / done -->
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-number" id="totalCount">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="pendingCount">0</span>
+          <span class="stat-label">Pending</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="doneCount">0</span>
+          <span class="stat-label">Done</span>
+        </div>
+      </div>
+
+      <!-- Add task form: text input + plus button -->
+      <form class="add-task-form" id="addTaskForm">
+        <input
+          type="text"
+          class="task-input"
+          id="taskInput"
+          placeholder="What do you need to do today?"
+          autocomplete="off"
+          maxlength="100"
+        />
+        <button type="submit" class="add-btn" id="addBtn" aria-label="Add task">
+          <span class="add-btn-icon">+</span>
+        </button>
+      </form>
+
+      <!-- Filter tabs: switch between All, Pending, and Done tasks -->
+      <!-- The data-filter attribute tells JavaScript which filter to apply -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="done">Done</button>
+      </div>
+
+      <!-- Task list: JavaScript fills this in dynamically -->
+      <ul class="task-list" id="taskList" aria-label="Task list">
+
+        <!-- This message shows when there are no tasks to display -->
+        <li class="empty-state" id="emptyState">
+          <div class="empty-icon">&#x1F4DD;</div>
+          <p>No tasks yet! Add one above.</p>
+        </li>
+
+      </ul>
+
+      <!-- Footer: button to remove all completed tasks at once -->
+      <footer class="app-footer">
+        <button class="clear-btn" id="clearDoneBtn">&#x1F5D1; Clear Completed</button>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- JavaScript is loaded at the bottom so all HTML exists before the script runs -->
+  <script src="app.js"></script>
+
+</body>
+</html>
