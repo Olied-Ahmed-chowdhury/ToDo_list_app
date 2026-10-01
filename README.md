@@ -1,81 +1,51 @@
-# ToDo List App
+# TaskFlow - Modern To-Do App
 
-A **beautiful, responsive To-Do List app** built with pure HTML, CSS, and JavaScript - no frameworks, no libraries, just clean and well-commented code.
+A clean, responsive, and lightweight task management web application built with vanilla HTML, CSS, and JavaScript.
 
-**Live Demo:** https://olied-ahmed-chowdhury.github.io/ToDo_list_app/
+![TaskFlow Screenshot](./screenshot.png)
 
----
+## Live Demo
+
+- **Live URL (GitHub Pages):** https://olied-ahmed-chowdhury.github.io/ToDo_list_app/
+- **Alternative Free Hosting:** Ready for one-click deployment on Netlify, Vercel, or Cloudflare Pages.
 
 ## Features
 
-- **Add tasks** - type and press Enter or click the `+` button
-- **Mark as done** - click the circle checkbox to complete a task
-- **Delete tasks** - hover over a task to reveal the x button
-- **Filter tasks** - switch between All, Pending, and Done tabs
-- **Auto-save** - tasks are saved in `localStorage` and survive page refresh
-- **Live stats bar** - shows Total, Pending, and Done counts in real time
+- **Task Management:** Create, edit, complete, and delete tasks with instant UI updates.
+- **Priorities and Categories:** Assign Low, Medium, or High priority levels and group tasks by category (Work, Personal, Study, Health, General).
+- **Due Dates and Deadlines:** Track task deadlines with real-time status indicators (Due Today, Overdue, Upcoming).
+- **Search and Filtering:** Instantly search tasks by title or category, and filter by status (All, Pending, Completed).
+- **Sorting Options:** Sort tasks by creation date, due date, priority level, or alphabetically.
+- **Progress Tracking:** Live statistics overview displaying total, pending, completed counts, and completion rate progress bar.
+- **Data Backup and Restore:** One-click JSON export and import for seamless local backups.
+- **Dark and Light Theme:** Built-in theme switcher with local storage persistence.
+- **Keyboard Shortcuts:** Quick task search using `/` and modal dismiss with `Escape`.
 
----
+## Getting Started
 
-## Design
+### Run Locally
 
-- Dark glassmorphism card with frosted-glass effect
-- Mesh gradient background (navy with cyan, indigo, and emerald blobs)
-- Gradient text title (cyan to indigo to emerald)
-- Segmented pill filter bar - each active tab has its own unique colour
-- Spring slide-in animation for new tasks
-- Shimmer effect on the Add button
-- Responsive - works on desktop and mobile
+1. Clone or download this repository.
+2. Open `index.html` directly in any web browser, or serve it locally:
 
----
-
-## Project Structure
-
-```
-ToDo_list_app/
-|-- index.html   # Page structure
-|-- style.css    # All styling (heavily commented)
-|-- app.js       # All logic  (heavily commented)
+```bash
+npx serve .
 ```
 
----
+### Deploy to Netlify / Vercel / Cloudflare Pages
 
-## How to Run Locally
+This is a static web app with zero build step:
+- **Netlify:** Drag and drop this folder onto https://app.netlify.com/drop or connect your GitHub repository.
+- **Vercel:** Import your GitHub repository on https://vercel.com/new and deploy with default settings.
+- **Cloudflare Pages:** Connect your GitHub repository on Cloudflare Pages dashboard and set root directory to `/`.
 
-1. Clone or download the repo
-2. Open a terminal in the project folder
-3. Run a local server:
-   ```bash
-   npx serve .
-   ```
-4. Open http://localhost:3000 in your browser
+## Technologies
 
-> You can also open `index.html` directly in any browser - no build step needed.
-
----
-
-## Built With
-
-| Technology | Purpose |
-|---|---|
-| HTML5 | Page structure and semantic markup |
-| CSS3 | Styling, animations, glassmorphism |
-| JavaScript (ES6) | App logic, DOM manipulation, localStorage |
-| Google Fonts (Inter) | Clean, modern typography |
-
----
-
-## Code Philosophy
-
-Every file is written to be as readable as possible:
-
-- `index.html` - short, plain-English comments on each section
-- `style.css` - table of contents at the top, variables in one place, section headers
-- `app.js` - grouped into named sections (STORAGE, RENDER, ADD, TOGGLE, DELETE...)
-
----
+- **HTML5:** Semantic document structure and accessible form elements.
+- **CSS3:** Custom design tokens, dark/light themes, flexbox/grid layout, and responsive styles.
+- **JavaScript (ES6):** Modular state management, DOM rendering, and LocalStorage persistence.
 
 ## Author
 
-**Olied Ahmed Chowdhury**
+**Olied Ahmed Chowdhury**  
 GitHub: https://github.com/Olied-Ahmed-chowdhury
