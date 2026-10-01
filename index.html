@@ -1,94 +1,301 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A simple and beautiful To-Do List app to manage your daily tasks." />
-  <title>To-Do List App</title>
+  <meta name="description" content="A clean, modern, and powerful To-Do List application to manage daily tasks, priorities, and deadlines." />
+  <title>Task Manager - To-Do List App</title>
 
-  <!-- Our styles -->
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Google Font (Inter) for clean, modern text -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-
 <body>
 
-  <!-- Outer wrapper — just centres the card on the page -->
-  <div class="app-wrapper">
+  <div class="app-container">
+    
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-icon-box">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">TaskFlow</h1>
+          <p class="brand-subtitle" id="currentDateDisplay">Today's Schedule</p>
+        </div>
+      </div>
 
-    <!-- The main card (the dark glass box everything sits inside) -->
-    <div class="app-card">
+      <div class="header-actions">
+        <!-- Export / Import buttons -->
+        <button class="action-btn" id="exportBtn" title="Export tasks to JSON" aria-label="Export tasks">
+          <svg class="icon-svg-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span class="btn-text">Export</span>
+        </button>
 
-      <!-- Header: icon + title -->
-      <header class="app-header">
-        <div class="header-icon">&#x2705;</div>
-        <h1 class="app-title">My To-Do List</h1>
-        <p class="app-subtitle">Stay organised, stay productive</p>
-      </header>
+        <label class="action-btn" for="importFileInput" title="Import tasks from JSON" aria-label="Import tasks">
+          <svg class="icon-svg-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span class="btn-text">Import</span>
+        </label>
+        <input type="file" id="importFileInput" accept=".json" style="display: none;" />
 
-      <!-- Stats bar: shows how many tasks are total / pending / done -->
-      <div class="stats-bar">
-        <div class="stat">
-          <span class="stat-number" id="totalCount">0</span>
+        <!-- Theme Toggle Button -->
+        <button class="action-btn theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+          <!-- Sun Icon (Dark Mode active) -->
+          <svg class="icon-svg-sm sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon (Light Mode active) -->
+          <svg class="icon-svg-sm moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Overview Stats & Progress -->
+    <section class="stats-card" aria-label="Task Statistics">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value" id="totalTasksCount">0</span>
           <span class="stat-label">Total</span>
         </div>
-        <div class="stat">
-          <span class="stat-number" id="pendingCount">0</span>
+        <div class="stat-item">
+          <span class="stat-value text-warning" id="pendingTasksCount">0</span>
           <span class="stat-label">Pending</span>
         </div>
-        <div class="stat">
-          <span class="stat-number" id="doneCount">0</span>
-          <span class="stat-label">Done</span>
+        <div class="stat-item">
+          <span class="stat-value text-success" id="completedTasksCount">0</span>
+          <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value text-accent" id="completionRateCount">0%</span>
+          <span class="stat-label">Done Rate</span>
         </div>
       </div>
 
-      <!-- Add task form: text input + plus button -->
-      <form class="add-task-form" id="addTaskForm">
+      <!-- Completion Progress Bar -->
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+      </div>
+    </section>
+
+    <!-- Task Creation Panel -->
+    <section class="panel-section create-panel">
+      <form class="task-form" id="addTaskForm">
+        <div class="form-main-row">
+          <input
+            type="text"
+            class="input-field task-title-input"
+            id="taskTitleInput"
+            placeholder="Add a new task..."
+            autocomplete="off"
+            maxlength="120"
+            required
+          />
+          <button type="submit" class="primary-btn add-btn" id="addBtn">
+            <svg class="icon-svg-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Task</span>
+          </button>
+        </div>
+
+        <!-- Task Metadata Options (Priority, Category, Due Date) -->
+        <div class="form-options-row">
+          <div class="select-wrapper">
+            <label for="prioritySelect" class="option-label">Priority</label>
+            <select id="prioritySelect" class="select-field">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <div class="select-wrapper">
+            <label for="categorySelect" class="option-label">Category</label>
+            <select id="categorySelect" class="select-field">
+              <option value="General" selected>General</option>
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="Study">Study</option>
+              <option value="Health">Health</option>
+            </select>
+          </div>
+
+          <div class="select-wrapper">
+            <label for="dueDateInput" class="option-label">Due Date</label>
+            <input type="date" id="dueDateInput" class="date-field" />
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Search, Filter & Sort Controls -->
+    <section class="controls-section">
+      <!-- Search Input -->
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
         <input
           type="text"
-          class="task-input"
-          id="taskInput"
-          placeholder="What do you need to do today?"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search tasks by title or tag..."
           autocomplete="off"
-          maxlength="100"
         />
-        <button type="submit" class="add-btn" id="addBtn" aria-label="Add task">
-          <span class="add-btn-icon">+</span>
+        <button type="button" id="clearSearchBtn" class="clear-search-btn hidden" aria-label="Clear search">
+          <svg class="icon-svg-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
-      </form>
-
-      <!-- Filter tabs: switch between All, Pending, and Done tasks -->
-      <!-- The data-filter attribute tells JavaScript which filter to apply -->
-      <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="pending">Pending</button>
-        <button class="filter-btn" data-filter="done">Done</button>
       </div>
 
-      <!-- Task list: JavaScript fills this in dynamically -->
-      <ul class="task-list" id="taskList" aria-label="Task list">
+      <!-- Filters & Sorting Row -->
+      <div class="filter-controls-row">
+        <!-- Status Filter Segmented Controls -->
+        <div class="segment-group" role="tablist" aria-label="Filter tasks by status">
+          <button type="button" class="segment-btn active" data-filter="all" role="tab">All</button>
+          <button type="button" class="segment-btn" data-filter="active" role="tab">Pending</button>
+          <button type="button" class="segment-btn" data-filter="completed" role="tab">Completed</button>
+        </div>
 
-        <!-- This message shows when there are no tasks to display -->
-        <li class="empty-state" id="emptyState">
-          <div class="empty-icon">&#x1F4DD;</div>
-          <p>No tasks yet! Add one above.</p>
-        </li>
+        <!-- Filter Dropdown & Sort Selector -->
+        <div class="secondary-filters">
+          <select id="categoryFilter" class="compact-select" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+            <option value="General">General</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Study">Study</option>
+            <option value="Health">Health</option>
+          </select>
 
+          <select id="sortBySelect" class="compact-select" aria-label="Sort tasks">
+            <option value="created-desc">Newest First</option>
+            <option value="created-asc">Oldest First</option>
+            <option value="due-date">Due Date</option>
+            <option value="priority">Priority</option>
+            <option value="alphabetical">Alphabetical</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Task List -->
+    <main class="list-section">
+      <ul class="task-list" id="taskList" aria-label="Tasks">
+        <!-- Dynamically injected via JavaScript -->
       </ul>
 
-      <!-- Footer: button to remove all completed tasks at once -->
-      <footer class="app-footer">
-        <button class="clear-btn" id="clearDoneBtn">&#x1F5D1; Clear Completed</button>
-      </footer>
+      <!-- Empty State View -->
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon-box">
+          <svg class="empty-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <h3 class="empty-title" id="emptyStateTitle">No tasks found</h3>
+        <p class="empty-desc" id="emptyStateDesc">Add a new task above or adjust your search filters.</p>
+      </div>
+    </main>
 
+    <!-- App Footer / Actions -->
+    <footer class="app-footer">
+      <span class="active-count-text" id="activeTasksSummary">0 items left</span>
+      <div class="footer-actions">
+        <button type="button" class="secondary-btn" id="clearCompletedBtn">
+          Clear Completed
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Edit Task Modal -->
+  <div class="modal-backdrop hidden" id="editModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Task</h3>
+        <button type="button" class="close-modal-btn" id="closeEditModalBtn" aria-label="Close dialog">
+          <svg class="icon-svg-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <form id="editTaskForm" class="modal-form">
+        <input type="hidden" id="editTaskId" />
+        <div class="modal-field-group">
+          <label for="editTaskTitle" class="modal-label">Task Title</label>
+          <input type="text" id="editTaskTitle" class="input-field" maxlength="120" required />
+        </div>
+        <div class="modal-row">
+          <div class="modal-field-group">
+            <label for="editPrioritySelect" class="modal-label">Priority</label>
+            <select id="editPrioritySelect" class="select-field">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="modal-field-group">
+            <label for="editCategorySelect" class="modal-label">Category</label>
+            <select id="editCategorySelect" class="select-field">
+              <option value="General">General</option>
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="Study">Study</option>
+              <option value="Health">Health</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-field-group">
+          <label for="editDueDateInput" class="modal-label">Due Date</label>
+          <input type="date" id="editDueDateInput" class="date-field" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" id="cancelEditBtn">Cancel</button>
+          <button type="submit" class="primary-btn">Save Changes</button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <!-- JavaScript is loaded at the bottom so all HTML exists before the script runs -->
-  <script src="app.js"></script>
+  <!-- Toast Notification -->
+  <div class="toast hidden" id="toastNotification" role="status" aria-live="polite"></div>
 
+  <!-- Core JavaScript -->
+  <script src="app.js"></script>
 </body>
 </html>
