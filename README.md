@@ -8,6 +8,7 @@ A clean, responsive, and lightweight task management web application built with 
 
 - **Live URL (GitHub Pages):** https://olied-ahmed-chowdhury.github.io/ToDo_list_app/
 - **Alternative Free Hosting:** Ready for one-click deployment on Netlify, Vercel, or Cloudflare Pages.
+- **Vercel:** https://todolistapp-xi-eight.vercel.app/
 
 ## Features
 
@@ -35,9 +36,9 @@ npx serve .
 ### Deploy to Netlify / Vercel / Cloudflare Pages
 
 This is a static web app with zero build step:
-- **Netlify:** Drag and drop this folder onto https://app.netlify.com/drop or connect your GitHub repository.
-- **Vercel:** Import your GitHub repository on https://vercel.com/new and deploy with default settings.
-- **Cloudflare Pages:** Connect your GitHub repository on Cloudflare Pages dashboard and set root directory to `/`.
+
+- **Vercel:** https://todolistapp-xi-eight.vercel.app/
+
 
 ## Technologies
 
